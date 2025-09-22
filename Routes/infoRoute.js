@@ -8,38 +8,123 @@ router.get('/', (req, res) => {
         version: "1.0.0",
         description: "A skill-based collaboration hub for students.",
         endpoints: {
+            auth: {
+                path: "/api/auth/login",
+                description: "Authenticates a user and syncs with the local database.",
+                methods: {
+                    "POST /": {
+                        description: "Authenticate a user and create a local user record if one doesn't exist.",
+                        input: "JSON object with user credentials (e.g., email and password).",
+                        output: "JSON object with a 'success' status and the user's data from the local database."
+                    }
+                }
+            },
             users: {
                 path: "/api/users",
                 description: "Manage student profiles.",
                 methods: {
-                    "POST /": "Create a new user.",
-                    "GET /": "Get all users.",
-                    "GET /:id": "Get a single user by ID.",
-                    "PUT /:id": "Update a user by ID.",
-                    "DELETE /:id": "Delete a user by ID.",
-                    "POST /:id/vote": "Upvote or downvote a user."
+                    "POST /": {
+                        description: "Create a new user.",
+                        input: "JSON object with user details (e.g., { name: 'John Doe', email: 'john@example.com' }).",
+                        output: "JSON object with the newly created user's data."
+                    },
+                    "GET /": {
+                        description: "Get all users.",
+                        input: "None.",
+                        output: "JSON object containing a list of all users."
+                    },
+                    "GET /:id": {
+                        description: "Get a single user by ID.",
+                        input: "User ID as a URL parameter (e.g., /api/users/60c72b2f9b1d8c1e2c8b4567).",
+                        output: "JSON object with the requested user's data."
+                    },
+                    "PUT /:id": {
+                        description: "Update a user by ID.",
+                        input: "User ID as a URL parameter and a JSON object with the fields to update.",
+                        output: "JSON object with the updated user's data."
+                    },
+                    "DELETE /:id": {
+                        description: "Delete a user by ID.",
+                        input: "User ID as a URL parameter.",
+                        output: "JSON object with a success message."
+                    },
+                    "POST /:id/vote": {
+                        description: "Upvote or downvote a user.",
+                        input: "User ID as a URL parameter and a JSON object with the vote type and voter's ID (e.g., { voteType: 'upvote', voterId: '...' }).",
+                        output: "JSON object with the updated user data including the new vote count."
+                    },
+                    "GET /profiles": {
+                        description: "Fetch and update profiles for all users from external platforms (GitHub, LeetCode).",
+                        input: "None.",
+                        output: "JSON object with a success message."
+                    },
+                    "GET /:id/profile": {
+                        description: "Fetch and update a single user's profile from external platforms.",
+                        input: "User ID as a URL parameter.",
+                        output: "JSON object with the updated user data."
+                    }
                 }
             },
             posts: {
                 path: "/api/posts",
                 description: "Manage discussion posts.",
                 methods: {
-                    "POST /": "Create a new post with AI tags and summary.",
-                    "GET /": "Get all posts.",
-                    "GET /:id": "Get a single post by ID.",
-                    "PUT /:id": "Update a post by ID.",
-                    "DELETE /:id": "Delete a post by ID.",
-                    "POST /:id/vote": "Upvote or downvote a post.",
-                    "POST /:id/comment": "Add a new comment to a post.",
-                    "POST /:postId/comment/:commentId/reply": "Reply to a specific comment on a post."
+                    "POST /": {
+                        description: "Create a new post with AI tags and summary.",
+                        input: "JSON object with the post content and user ID (e.g., { content: '...', userId: '...' }).",
+                        output: "JSON object with the newly created post data, including the AI-generated summary and tags."
+                    },
+                    "GET /": {
+                        description: "Get all posts.",
+                        input: "None.",
+                        output: "JSON object containing a list of all posts."
+                    },
+                    "GET /:id": {
+                        description: "Get a single post by ID.",
+                        input: "Post ID as a URL parameter.",
+                        output: "JSON object with the requested post's data."
+                    },
+                    "PUT /:id": {
+                        description: "Update a post by ID.",
+                        input: "Post ID as a URL parameter and a JSON object with the fields to update.",
+                        output: "JSON object with the updated post's data."
+                    },
+                    "DELETE /:id": {
+                        description: "Delete a post by ID.",
+                        input: "Post ID as a URL parameter.",
+                        output: "JSON object with a success message."
+                    },
+                    "POST /:id/vote": {
+                        description: "Upvote or downvote a post.",
+                        input: "Post ID as a URL parameter and a JSON object with the vote type and user's ID (e.g., { voteType: 'upvote', userId: '...' }).",
+                        output: "JSON object with the updated post data including the new vote count."
+                    },
+                    "POST /:id/comment": {
+                        description: "Add a new comment to a post.",
+                        input: "Post ID as a URL parameter and a JSON object with the comment text and user ID (e.g., { text: '...', commentedBy: '...' }).",
+                        output: "JSON object with the updated post data including the new comment."
+                    },
+                    "POST /:postId/comment/:commentId/reply": {
+                        description: "Reply to a specific comment on a post.",
+                        input: "Post and comment IDs as URL parameters, and a JSON object with the reply text and user ID.",
+                        output: "JSON object with the updated post data including the new reply."
+                    }
                 }
             },
-            opportunities: { // ⬅️ New opportunities endpoint
+            opportunities: {
                 path: "/api/opportunities",
                 description: "Retrieve a list of competitions and opportunities from Unstop.",
                 methods: {
-                    "GET /": "List all competitions with pagination and filtering.",
-                    "GET /:id": "Get a single competition by its unique ID."
+                    "GET /": {
+                        description: "List all competitions with pagination and filtering.",
+                        input: "Optional URL query parameters for filtering and sorting.",
+                        output: "JSON object with paginated and filtered opportunities."
+                    },
+                    "GET /:id": {
+                        description: "Get a single competition by its unique ID.",
+                        input: "Opportunity ID as a URL parameter.",
+                        output: "JSON object with the requested opportunity's data."
+                    }
                 },
                 parameters: [
                     "page: The page number (e.g., ?page=2)",
@@ -52,8 +137,8 @@ router.get('/', (req, res) => {
             }
         },
         contact: {
-            author: "Your Name",
-            github: "Your GitHub Profile"
+            author: "Pranav Khaspa",
+            github: "https://github.com/pranavkhaspa"
         }
     };
 
