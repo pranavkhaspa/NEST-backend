@@ -21,4 +21,10 @@ router.delete('/:id', userController.deleteUser);
 // Route for upvoting and downvoting a user
 router.post('/:id/vote', userController.voteUser);
 
+// Route to fetch and update ALL user profiles
+router.get("/profiles", userController.getProfile);
+
+// Route to fetch and update a SINGLE user's profile
+router.get("/:id/profile", userController.getSingleProfile);
+
 export default router;
