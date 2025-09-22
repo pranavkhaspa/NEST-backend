@@ -28,3 +28,5 @@ router.get("/profiles", userController.getProfile);
 router.get("/:id/profile", userController.getSingleProfile);
 
 export default router;
+
+
