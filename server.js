@@ -1,5 +1,6 @@
 import express from 'express';
 import http from 'http'; // Import the built-in Node.js http module
+import cors from 'cors'; // Import the cors package
 import startScraperJob from './Cronjob/unstopScraper.js';
 import { Server } from "socket.io"; // Import the Server class from socket.io
 import connectDB from './Config/db.js';
@@ -19,6 +20,9 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+// Use cors middleware
+app.use(cors());
 
 // Create an HTTP server from your Express app
 const server = http.createServer(app);

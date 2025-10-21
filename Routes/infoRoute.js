@@ -9,13 +9,18 @@ router.get('/', (req, res) => {
         description: "A skill-based collaboration hub for students.",
         endpoints: {
             auth: {
-                path: "/api/auth/login",
-                description: "Authenticates a user and syncs with the local database.",
+                path: "/api/users",
+                description: "User authentication and registration.",
                 methods: {
-                    "POST /": {
-                        description: "Authenticate a user and create a local user record if one doesn't exist.",
-                        input: "JSON object with user credentials (e.g., email and password).",
-                        output: "JSON object with a 'success' status and the user's data from the local database."
+                    "POST /register": {
+                        description: "Register a new user.",
+                        input: "JSON object with user details (name, email, username, password).",
+                        output: "JSON object with a JWT token."
+                    },
+                    "POST /login": {
+                        description: "Authenticate a user and get a JWT token.",
+                        input: "JSON object with user credentials (email, password).",
+                        output: "JSON object with a JWT token."
                     }
                 }
             },

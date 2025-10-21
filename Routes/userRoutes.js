@@ -1,30 +1,47 @@
 import express from 'express';
-import * as userController from '../Controllers/UserController.js';
+import {
+    registerUser,
+    loginUser,
+    getAllUsers,
+    getUserById,
+    updateUser,
+    deleteUser,
+    voteUser,
+    getProfile,
+    getSingleProfile
+} from '../Controllers/UserController.js';
 
 const router = express.Router();
 
-// CREATE a new user
-router.post('/', userController.createUser);
+// @route   POST api/users/register
+// @desc    Register a user
+// @access  Public
+router.post('/register', registerUser);
+
+// @route   POST api/users/login
+// @desc    Authenticate user & get token
+// @access  Public
+router.post('/login', loginUser);
 
 // READ all users
-router.get('/', userController.getAllUsers);
+router.get('/', getAllUsers);
 
 // READ a single user by ID
-router.get('/:id', userController.getUserById);
+router.get('/:id', getUserById);
 
 // UPDATE a user by ID
-router.put('/:id', userController.updateUser);
+router.put('/:id', updateUser);
 
 // DELETE a user by ID
-router.delete('/:id', userController.deleteUser);
+router.delete('/:id', deleteUser);
 
 // Route for upvoting and downvoting a user
-router.post('/:id/vote', userController.voteUser);
+router.post('/:id/vote', voteUser);
 
 // Route to fetch and update ALL user profiles
-router.get("/profiles", userController.getProfile);
+router.get("/profiles", getProfile);
 
 // Route to fetch and update a SINGLE user's profile
-router.get("/:id/profile", userController.getSingleProfile);
+router.get("/:id/profile", getSingleProfile);
 
 export default router;

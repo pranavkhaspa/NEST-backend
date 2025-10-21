@@ -1,4 +1,101 @@
 import User from '../Models/user.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+// @desc    Register a new user
+// @route   POST /api/users/register
+// @access  Public
+export const registerUser = async (req, res) => {
+    const { name, email, username, password, github, leetcode, linkedin } = req.body;
+
+    try {
+        // Check if user already exists
+        let user = await User.findOne({ email });
+        if (user) {
+            return res.status(400).json({ success: false, message: 'User already exists' });
+        }
+
+        // Create a new user instance
+        user = new User({
+            name,
+            email,
+            username,
+            password,
+            github,
+            leetcode,
+            linkedin
+        });
+
+        // Hash password
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
+
+        // Save user to database
+        await user.save();
+
+        // Create and return a JSON Web Token (JWT)
+        const payload = {
+            user: {
+                id: user.id
+            }
+        };
+
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            { expiresIn: '5d' },
+            (err, token) => {
+                if (err) throw err;
+                res.status(201).json({ success: true, token });
+            }
+        );
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error: ' + error.message });
+    }
+};
+
+// @desc    Authenticate user & get token
+// @route   POST /api/users/login
+// @access  Public
+export const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Check if user exists
+        let user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'Invalid credentials' });
+        }
+
+        // Check password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ success: false, message: 'Invalid credentials' });
+        }
+
+        // Create and return a JSON Web Token (JWT)
+        const payload = {
+            user: {
+                id: user.id
+            }
+        };
+
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            { expiresIn: '5d' },
+            (err, token) => {
+                if (err) throw err;
+                res.json({ success: true, token });
+            }
+        );
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error: ' + error.message });
+    }
+};
+
 
 // @desc    Create a new user
 // @route   POST /api/users
