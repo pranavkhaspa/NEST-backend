@@ -352,6 +352,7 @@ export const getProfile = async (req, res) => {
               updateData.profileurl = url;
               updateData.github = user.github;
               updateData.readme = bio;
+              profilePicture = avatarUrl;updateData.
 
               const allDays =
                 githubUser.contributionsCollection.contributionCalendar.weeks.flatMap(
