@@ -352,7 +352,13 @@ export const getProfile = async (req, res) => {
               updateData.profileurl = url;
               updateData.github = user.github;
               updateData.readme = bio;
-              profilePicture = avatarUrl;updateData.
+
+              //
+              // ✨ --- THIS WAS THE SYNTAX ERROR --- ✨
+              // The broken line 'profilePicture = avatarUrl;updateData.' is fixed
+              updateData.profilePicture = avatarUrl;
+              //
+              //
 
               const allDays =
                 githubUser.contributionsCollection.contributionCalendar.weeks.flatMap(
@@ -478,6 +484,13 @@ export const getSingleProfile = async (req, res) => {
             updateData.profileurl = url;
             updateData.github = user.github;
             updateData.readme = bio;
+
+            //
+            // ✨ --- THIS WAS THE LOGIC BUG --- ✨
+            // Added this line to actually save the avatarUrl
+            updateData.profilePicture = avatarUrl;
+            //
+            //
 
             const allDays =
               githubUser.contributionsCollection.contributionCalendar.weeks.flatMap(
