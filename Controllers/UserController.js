@@ -2,9 +2,9 @@ import User from "../Models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-// @desc    Register a new user
-// @route   POST /api/users/register
-// @access  Public
+// @desc    Register a new user
+// @route   POST /api/users/register
+// @access  Public
 export const registerUser = async (req, res) => {
   const { name, email, username, password, github, leetcode, linkedin } =
     req.body;
@@ -72,9 +72,9 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// @desc    Authenticate user & get token
-// @route   POST /api/users/login
-// @access  Public
+// @desc    Authenticate user & get token
+// @route   POST /api/users/login
+// @access  Public
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -141,9 +141,9 @@ export const createUser = async (req, res) => {
   }
 };
 
-// @desc    Get all users
-// @route   GET /api/users
-// @access  Public
+// @desc    Get all users
+// @route   GET /api/users
+// @access  Public
 export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -153,9 +153,9 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-// @desc    Get a single user by ID
-// @route   GET /api/users/:id
-// @access  Public
+// @desc    Get a single user by ID
+// @route   GET /api/users/:id
+// @access  Public
 export const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
@@ -173,9 +173,9 @@ export const getUserById = async (req, res) => {
   }
 };
 
-// @desc    Update a user by ID
-// @route   PUT /api/users/:id
-// @access  Public
+// @desc    Update a user by ID
+// @route   PUT /api/users/:id
+// @access  Public
 export const updateUser = async (req, res) => {
   try {
     const { name, bio, github, leetcode, linkedin, skills } = req.body;
@@ -202,9 +202,9 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// @desc    Delete a user by ID
-// @route   DELETE /api/users/:id
-// @access  Public
+// @desc    Delete a user by ID
+// @route   DELETE /api/users/:id
+// @access  Public
 export const deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
@@ -222,9 +222,9 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-// @desc    Upvote or downvote a user
-// @route   POST /api/users/:id/vote
-// @access  Public
+// @desc    Upvote or downvote a user
+// @route   POST /api/users/:id/vote
+// @access  Public
 export const voteUser = async (req, res) => {
   const { voteType, voterId } = req.body;
   const userId = req.params.id;
@@ -407,9 +407,9 @@ export const getProfile = async (req, res) => {
   }
 };
 
-// @desc    Fetch and update a single user's profile from LeetCode and GitHub
-// @route   POST /api/users/:id/profile
-// @access  Public
+// @desc    Fetch and update a single user's profile from LeetCode and GitHub
+// @route   POST /api/users/:id/profile
+// @access  Public
 export const getSingleProfile = async (req, res) => {
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
   const userId = req.params.id;
@@ -538,3 +538,4 @@ export const getSingleProfile = async (req, res) => {
       .json({ success: false, message: "Server error: " + error.message });
   }
 };
+
